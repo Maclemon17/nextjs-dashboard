@@ -20,9 +20,9 @@ export default function EditInvoiceForm({
   customers: CustomerField[];
 }) {
   const initialState = { message: null, errors: {} };
-  const updateInvoiceWithId = updateInvoice.bind(null, (invoice.id));
+  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
-  console.log(state);
+  
   return (
     <form action={dispatch}>
       <input type='hidden' name='id' value={invoice.id} />
