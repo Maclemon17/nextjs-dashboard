@@ -10,6 +10,7 @@ export default async function CustomersTable({
   customers,
 }: {
   customers: FormattedCustomersTable[];
+  // customers: any;
 }) {
   return (
     <div className="w-full">
