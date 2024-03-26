@@ -193,8 +193,7 @@ export async function fetchCustomers() {
     `;
 
     const customers = data.rows;
-    // console.log("CUSTOMERS -", customers);
-    return customers;
+     return customers;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all customers.');
@@ -202,6 +201,8 @@ export async function fetchCustomers() {
 }
 
 export async function fetchFormatedCustomers() {
+  noStore();
+  
   try {
     const data = await sql<FormattedCustomersTable>`
     SELECT
@@ -209,13 +210,13 @@ export async function fetchFormatedCustomers() {
       customers.name,
       customers.email,
       customers.image_url,
-    COUNT(invoices.id) AS total_invoices,
-    SUM(CASE WHEN invoices.status = 'pending' THEN 1 ELSE 0 END) AS total_pending,
-    SUM(CASE WHEN invoices.status = 'paid' THEN 1 ELSE 0 END) AS total_paid
-  FROM customers
-  LEFT JOIN invoices ON customers.id = invoices.customer_id
-  GROUP BY customers.id, customers.name, customers.email, customers.image_url
-  ORDER BY customers.name ASC;
+      COUNT(invoices.id) AS total_invoices,
+      SUM(CASE WHEN invoices.status = 'pending' THEN 1 ELSE 0 END) AS total_pending,
+      SUM(CASE WHEN invoices.status = 'paid' THEN 1 ELSE 0 END) AS total_paid
+    FROM customers
+    LEFT JOIN invoices ON customers.id = invoices.customer_id
+    GROUP BY customers.id, customers.name, customers.email, customers.image_url
+    ORDER BY customers.name ASC;
  `;
 
     const customers = data.rows;
